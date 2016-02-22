@@ -3,6 +3,7 @@ package com.peirr.filebrowser;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class DirectoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_directory, container, false);
         recycler = (RecyclerView) view.findViewById(R.id.directory_list);
+        recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
     }
 

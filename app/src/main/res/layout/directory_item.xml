@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/directory_icon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -16,27 +16,31 @@
         android:contentDescription="@null"
         />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        tools:text="Pictures"
-        android:id="@+id/directory_name"
         android:layout_centerVertical="true"
-        android:maxLines="1"
-        android:ellipsize="end"
+        android:orientation="vertical"
         android:layout_toRightOf="@+id/directory_icon"
-        android:layout_toEndOf="@+id/directory_icon" />
+        android:layout_toEndOf="@+id/directory_icon"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="Pictures"
+            android:id="@+id/directory_name"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        tools:text="Small Text"
-        android:id="@+id/directory_date"
-        android:maxLines="1"
-        android:layout_below="@+id/directory_name"
-        android:layout_toRightOf="@+id/directory_icon"
-        android:layout_toEndOf="@+id/directory_icon" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:text="Small Text"
+            android:id="@+id/directory_date"
+            android:maxLines="1" />
+    </LinearLayout>
+
 
 </RelativeLayout>

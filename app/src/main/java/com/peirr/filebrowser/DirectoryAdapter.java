@@ -2,6 +2,7 @@ package com.peirr.filebrowser;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import com.peirr.filebrowser.dir.ExternalStorageRepository;
 import com.peirr.filebrowser.dir.model.DirectoryItem;
 
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DirectoryItem} and makes a call to the
@@ -41,6 +44,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.View
     private final List<DirectoryItem> items;
     private final OnDirectoryItemSelectionListener listener;
     private Context context;
+    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyy");
 
     public DirectoryAdapter(List<DirectoryItem> items, OnDirectoryItemSelectionListener listener) {
         this.items = items;
@@ -58,6 +62,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.item = items.get(position);
         holder.name.setText(holder.item.getFile().getName());
+        holder.modified.setText(DateUtils.getRelativeDateTimeString(context,holder.item.getFile().lastModified(),DateUtils.MINUTE_IN_MILLIS,DateUtils.WEEK_IN_MILLIS,0));
 
         if(holder.item.getFile().isDirectory()){
             Glide.with(context)
@@ -81,7 +86,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.View
                     .into(holder.icon);
         }
 
-        holder.icon.setOnClickListener(new View.OnClickListener() {
+        holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
