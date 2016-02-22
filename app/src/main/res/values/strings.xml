@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FileBrowser</string>
+    <string name="rationale_storage_permission">We require access to external storage in-order for this app to function.</string>
 </resources>
