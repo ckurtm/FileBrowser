@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.peirr.filebrowser.dir.model.DirectoryItem;
+
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class FileBrowser extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
+public class FileBrowser extends AppCompatActivity implements EasyPermissions.PermissionCallbacks ,DirectoryAdapter.OnDirectoryItemSelectionListener {
     private static final String TAG = "FileBrowser";
     private final int REQUEST_STORAGE_PERMISSION = 1;
 
@@ -66,5 +68,15 @@ public class FileBrowser extends AppCompatActivity implements EasyPermissions.Pe
             }
         })
         .show();
+    }
+
+    @Override
+    public void onDirectoryItemSelected(DirectoryItem item) {
+
+    }
+
+    @Override
+    public void onDirectoryPreviousSelected() {
+
     }
 }
