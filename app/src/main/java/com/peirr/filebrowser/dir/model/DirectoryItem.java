@@ -1,4 +1,4 @@
-package com.peirr.filebrowser.model;
+package com.peirr.filebrowser.dir.model;
 
 import java.io.File;
 
@@ -9,11 +9,14 @@ public class DirectoryItem {
     private File file; //the actual file listing entry
     private int type; // the filetype e.g. audio,video,image e.t.c
 
+    public DirectoryItem(File file, int type) {
+        this.file = file;
+        this.type = type;
+    }
 
     public File getFile() {
         return file;
     }
-
 
     public int getType() {
         return type;

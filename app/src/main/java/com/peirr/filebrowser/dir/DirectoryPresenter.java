@@ -1,7 +1,7 @@
-package com.peirr.filebrowser;
+package com.peirr.filebrowser.dir;
 
 
-import com.peirr.filebrowser.model.DirectoryItem;
+import com.peirr.filebrowser.dir.model.DirectoryItem;
 
 import java.io.File;
 import java.util.Stack;
@@ -9,17 +9,16 @@ import java.util.Stack;
 /**
  * Created by kurt on 2016/01/28.
  */
-public class DirectoryPresenter implements DirectoryContract.BrowseActionsListener {
+public class DirectoryPresenter implements DirectoryContract.DirectoryActionsListener {
 
     private final StorageRepository repository;
-    private final DirectoryContract.BrowseView view;
+    private final DirectoryContract.DirectoryView view;
 
-    private DirectoryItem[] directoryItems;
-    private File currentPath;
-    private Stack<String> traversalStack = new Stack<>(); //keeps track of the traversed traversalStack
+    private File currentPath; //the current directory path
+    private Stack<String> traversalStack = new Stack<>(); //keeps track of the traversed directories and where we are now.
     private Boolean parentDirectory = true; //we are initialy at the parent directory
 
-    public DirectoryPresenter(StorageRepository repository, DirectoryContract.BrowseView view) {
+    public DirectoryPresenter(StorageRepository repository, DirectoryContract.DirectoryView view) {
         this.repository = repository;
         this.view = view;
         this.currentPath = new File(repository.getRootDirectory());
@@ -34,7 +33,6 @@ public class DirectoryPresenter implements DirectoryContract.BrowseActionsListen
         if (item.getFile().isDirectory()) {
             parentDirectory = false;
             traversalStack.push(item.getFile().getName());
-            directoryItems = null;
             currentPath = new File(currentPath + "/" + item.getFile().getName());
             listCurrentDirectory();
         } else {
@@ -50,7 +48,6 @@ public class DirectoryPresenter implements DirectoryContract.BrowseActionsListen
             repository.getDirectoryListing(path, new StorageRepository.DirectoryListingCallback() {
                 @Override
                 public void onDirectoryListed(DirectoryItem[] items, Exception e) {
-                    directoryItems = items;
                     view.showDirectoryLoading(false);
                     if (e == null) {
                         view.showDirectory(path, items);
@@ -64,14 +61,12 @@ public class DirectoryPresenter implements DirectoryContract.BrowseActionsListen
         }
     }
 
-
     @Override
     public void listPreviousDirectory() {
         if (!parentDirectory) {
             String s = traversalStack.pop();
             //get the filename only from the absolute currentPath
             currentPath = new File(currentPath.toString().substring(0, currentPath.toString().lastIndexOf(s)));
-            directoryItems = null;
             // if there are no more traversalStack in the list, then its the parent directory
             parentDirectory = traversalStack.isEmpty();
             listCurrentDirectory();
