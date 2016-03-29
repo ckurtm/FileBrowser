@@ -34,6 +34,7 @@ public class DirectoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_directory, container, false);
         recycler = (RecyclerView) view.findViewById(R.id.directory_list);
+        recycler.addItemDecoration(new DividerItemDecoration(getActivity()));
         recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
     }
