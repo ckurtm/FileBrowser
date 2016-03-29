@@ -9,14 +9,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 
+import com.google.android.libraries.cast.companionlibrary.cast.DataCastManager;
+import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
+import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
 import com.peirr.filebrowser.dir.DirectoryContract;
 import com.peirr.filebrowser.dir.DirectoryPresenter;
 import com.peirr.filebrowser.dir.ExternalStorageRepository;
 import com.peirr.filebrowser.dir.StorageRepository;
 import com.peirr.filebrowser.dir.model.DirectoryItem;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +48,15 @@ public class FileBrowser extends AppCompatActivity implements EasyPermissions.Pe
         directoryPresenter = new DirectoryPresenter(repository,this);
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu,menu);
+        DataCastManager.getInstance().addMediaRouterButton(menu,R.id.action_cast);
+        return true;
+    }
+
 
     @Override
     protected void onStart() {
@@ -118,6 +135,20 @@ public class FileBrowser extends AppCompatActivity implements EasyPermissions.Pe
 
     @Override
     public void showDirectoryItem(DirectoryItem item) {
+        try {
+            DataCastManager.getInstance().checkConnectivity();
+
+            JSONObject obj = new JSONObject();
+            obj.put("url","http://www.pixelstalk.net/wp-content/uploads/2016/01/Anime-Backgrounds-Download.jpg");
+            DataCastManager.getInstance().sendDataMessage(obj.toString(),"urn:x-cast:com.peirr.imagecast");
+
+        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
+            Log.e(TAG,"no connection");
+        } catch (IOException e) {
+            Log.e(TAG,Log.getStackTraceString(e));
+        } catch (JSONException e) {
+            Log.e(TAG,Log.getStackTraceString(e));
+        }
         //let the device handle looking for an app that can view this file type
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(item.getFile()), URLConnection.guessContentTypeFromName(item.getFile().getAbsolutePath()));

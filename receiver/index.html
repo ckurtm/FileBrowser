@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>ImageCast</title>
+    <script src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+    <link rel="stylesheet" href="receiver.css"/>
+</head>
+<body>
+
+<div>
+    <img id="image" src="http://www.pixelstalk.net/wp-content/uploads/2016/01/Anime-Backgrounds-Download.jpg">
+</div>
+<script>
+
+
+function process(json){
+ console.log('received: ' + json.url);
+ document.getElementById("image").src= json.url;
+}
+    window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+
+    castReceiverManager.onSenderDisconnected = function(event) {
+        console.log('DISCONNECTED: ' + event.data);
+        if (window.castReceiverManager.getSenders().length == 0) {
+            window.close();
+        }
+    };
+
+    // create a CastMessageBus to handle messages for a custom namespace
+    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:com.peirr.imagecast');
+
+    window.messageBus.onMessage = function(event) {
+        var json = JSON.parse(event['data']);
+        window.sender = event.senderId;
+        process(json);
+    }
+
+    window.castReceiverManager.start();
+
+</script>
+</body>
+</html>
