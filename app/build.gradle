@@ -10,22 +10,50 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        mock {
+            applicationIdSuffix = ".mock"
+        }
+        prod {
+
+        }
+    }
+
+    // Remove mockRelease as it's not needed.
+    android.variantFilter { variant ->
+        if(variant.buildType.name.equals('release')
+                && variant.getFlavors().get(0).name.equals('mock')) {
+            variant.setIgnore(true);
+        }
+    }
+
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
+
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
     compile 'pub.devrel:easypermissions:0.1.4'
-    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.google.android.libraries.cast.companionlibrary:ccl:2.8.3'
+    compile 'com.peirr.http:http_service:1.6'
 }

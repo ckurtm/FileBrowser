@@ -15,7 +15,6 @@ public class App extends Application {
         CastConfiguration options =new CastConfiguration.Builder("84B70D9D")
                 .enableAutoReconnect()
                 .enableDebug()
-                .enableWifiReconnection()
                 .build();
         DataCastManager.initialize(this,options);
     }

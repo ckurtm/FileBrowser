@@ -3,6 +3,7 @@
     package="com.peirr.filebrowser">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -11,13 +12,14 @@
         android:supportsRtl="true"
         android:name=".App"
         android:theme="@style/AppTheme">
-        <activity android:name=".FileBrowser">
+        <activity android:name=".BrowseActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name="com.peirr.http.service.SimpleHttpService"/>
     </application>
 
 </manifest>
